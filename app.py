@@ -6,26 +6,41 @@ import json
 import datetime
 from serial import SerialException
 import paho.mqtt.client as mqtt
+# usbid version only for 1.0.3
+from usbid.device import usb_roots
 
 # MQTT setup data
 MQTT_SERVER = "10.20.0.19"
 MQTT_PORT = 1883
 MQTT_TOPIC = "air-conditioner-vent"
 
-cold_swnsor = serial.Serial()
+cold_sensor = serial.Serial()
 
 def arduino_connect():
-    global cold_swnsor
-    try:
-        cold_swnsor = serial.Serial("COM8", 9600, timeout=1)
+	global cold_sensor
+	cold_sensor_tty = ""
+	for usb_id in range(1, 10):
+		try:
+			usb_info = usb_roots()[1][1][usb_id]
+		except:
+			usb_info = " "
+		if (usb_info != " "):
+			if (usb_info.idVendor == "067b" and usb_info.idProduct == "2303"):
+				cold_sensor_tty = usb_info.tty
+				print("cold_sensor_tty -->" + cold_sensor)
+			else:
+                print("arduino plugin error")
+		if (device_A != ""):
+			break
+	try:
+		cold_sensor = serial.Serial('/dev/' + device_A, 9600, timeout=1)
         time.sleep(2.5)
-    except:
-        print("arduino plugin error")
-    time.sleep(1)
+	except:
+		cold_sensor_tty = serial.Serial()
 
 while(1):
-    if(cold_swnsor.is_open):
-        response = cold_swnsor.readline()
+    if(cold_sensor.is_open):
+        response = cold_sensor.readline()
         response = response.decode('ascii')
         print(response)
         if (response != ""):
