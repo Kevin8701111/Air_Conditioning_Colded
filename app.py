@@ -36,7 +36,7 @@ def arduino_connect():
 		cold_sensor = serial.Serial('/dev/' + device_A, 9600, timeout=1)
         time.sleep(2.5)
 	except:
-		cold_sensor_tty = serial.Serial()
+		cold_sensor = serial.Serial()
 
 while(1):
     if(cold_sensor.is_open):
