@@ -29,32 +29,32 @@ def arduino_connect():
 				cold_sensor_tty = usb_info.tty
 				print("cold_sensor_tty -->" + cold_sensor_tty)
 			else:
-                print("arduino plugin error")
+				print("arduino plugin error")
 		if (cold_sensor_tty != ""):
 			break
 	try:
 		cold_sensor = serial.Serial('/dev/' + cold_sensor_tty, 9600, timeout=1)
-        time.sleep(2.5)
+		time.sleep(2.5)
 	except:
 		cold_sensor = serial.Serial()
-        time.sleep(1)
+	time.sleep(1)
 
 while(1):
-    if(cold_sensor.is_open):
-        response = cold_sensor.readline()
-        response = response.decode('ascii')
-        print(response)
-        if (response != ""):
-            print('------------------------------------------------------')
-            try:
-                # MQTT connection
-                mqtt_conn = mqtt.Client()
-                mqtt_conn.connect(MQTT_SERVER, MQTT_PORT)
-                mqtt_conn.publish(MQTT_TOPIC, response)
-                now = datetime.datetime.now()
-                print('MQTT To Server OK ! -->' , now)
-            except:
-                print('MQTT To Server Error !')
-            print('------------------------------------------------------')
-    else:
-        arduino_connect()
+	if(cold_sensor.is_open):
+		response = cold_sensor.readline()
+		response = response.decode('ascii')
+		print(response)
+		if (response != ""):
+			print('------------------------------------------------------')
+			try:
+				# MQTT connection
+				mqtt_conn = mqtt.Client()
+				mqtt_conn.connect(MQTT_SERVER, MQTT_PORT)
+				mqtt_conn.publish(MQTT_TOPIC, response)
+				now = datetime.datetime.now()
+				print('MQTT To Server OK ! -->' , now)
+			except:
+				print('MQTT To Server Error !')
+			print('------------------------------------------------------')
+	else:
+		arduino_connect()
