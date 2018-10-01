@@ -27,13 +27,13 @@ def arduino_connect():
 		if (usb_info != " "):
 			if (usb_info.idVendor == "067b" and usb_info.idProduct == "2303"):
 				cold_sensor_tty = usb_info.tty
-				print("cold_sensor_tty -->" + cold_sensor)
+				print("cold_sensor_tty -->" + cold_sensor_tty)
 			else:
                 print("arduino plugin error")
-		if (device_A != ""):
+		if (cold_sensor_tty != ""):
 			break
 	try:
-		cold_sensor = serial.Serial('/dev/' + device_A, 9600, timeout=1)
+		cold_sensor = serial.Serial('/dev/' + cold_sensor_tty, 9600, timeout=1)
         time.sleep(2.5)
 	except:
 		cold_sensor = serial.Serial()
