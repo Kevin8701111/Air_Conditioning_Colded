@@ -37,6 +37,7 @@ def arduino_connect():
         time.sleep(2.5)
 	except:
 		cold_sensor = serial.Serial()
+        time.sleep(1)
 
 while(1):
     if(cold_sensor.is_open):
