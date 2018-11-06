@@ -8,7 +8,7 @@ from serial import SerialException
 import paho.mqtt.client as mqtt
 
 # MQTT setup data
-MQTT_SERVER = "shengzheng.ddns.net"
+MQTT_SERVER = "10.20.0.19"
 MQTT_PORT = 1883
 MQTT_TOPIC = "air-conditioner-vent"
 
